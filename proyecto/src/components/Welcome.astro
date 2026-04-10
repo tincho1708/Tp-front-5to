@@ -1116,98 +1116,126 @@ import fondo from '../assets/background.svg';
 
 
 <script is:inline>
-  var botonTema = document.getElementById("boton-tema");
-  var iconoTema = document.getElementById("icono-tema");
-  var contenedor = document.getElementById("contenedor");
+  // ===== TEMA =====
+let botonTema = document.getElementById("boton-tema");
+let iconoTema = document.getElementById("icono-tema");
+let contenedor = document.getElementById("contenedor");
 
-  var temaOscuro = true;
+let temaOscuro = true;
 
-  if (sessionStorage.getItem("tema") === "claro") {
-    temaOscuro = false;
+// Cargar tema guardado
+let temaGuardado = sessionStorage.getItem("tema");
+
+if (temaGuardado === "claro") {
+  temaOscuro = false;
+  contenedor.setAttribute("data-tema", "claro");
+  iconoTema.textContent = "🌙";
+}
+
+// Cambiar tema
+botonTema.addEventListener("click", function () {
+  temaOscuro = !temaOscuro;
+
+  if (temaOscuro) {
+    contenedor.removeAttribute("data-tema");
+    iconoTema.textContent = "☀️";
+    sessionStorage.setItem("tema", "oscuro");
+  } else {
     contenedor.setAttribute("data-tema", "claro");
     iconoTema.textContent = "🌙";
+    sessionStorage.setItem("tema", "claro");
+  }
+});
+
+
+
+let inputNombre = document.getElementById("nombre");
+let botonEntrar = document.getElementById("entrar");
+let seccionInicio = document.getElementById("inicio");
+let seccionPanel = document.getElementById("panel");
+let elementoSaludo = document.getElementById("saludo");
+
+
+let nombreGuardado = sessionStorage.getItem("nombre");
+
+if (nombreGuardado) {
+  inputNombre.value = nombreGuardado;
+} else {
+  inputNombre.value = "";
+}
+
+
+inputNombre.focus();
+
+
+inputNombre.addEventListener("keydown", function (e) {
+  if (e.key === "Enter") {
+    botonEntrar.click();
+  }
+});
+
+
+botonEntrar.addEventListener("click", function () {
+  let nombre = inputNombre.value.trim();
+
+  if (nombre === "") {
+    nombre = "usuario";
   }
 
-  botonTema.addEventListener("click", function () {
-    temaOscuro = !temaOscuro;
-    if (temaOscuro) {
-      contenedor.removeAttribute("data-tema");
-      iconoTema.textContent = "☀️";
-      sessionStorage.setItem("tema", "oscuro");
+  sessionStorage.setItem("nombre", nombre);
+
+  
+  seccionInicio.style.opacity = "0";
+  seccionInicio.style.pointerEvents = "none";
+
+  setTimeout(function () {
+    seccionInicio.style.display = "none";
+
+   
+    let hora = new Date().getHours();
+    let saludo = "";
+
+    if (hora < 12) {
+      saludo = "Buenos días";
+    } else if (hora < 19) {
+      saludo = "Buenas tardes";
     } else {
-      contenedor.setAttribute("data-tema", "claro");
-      iconoTema.textContent = "🌙";
-      sessionStorage.setItem("tema", "claro");
+      saludo = "Buenas noches";
     }
-  });
 
-  var inputNombre = document.getElementById("nombre");
-  var botonEntrar = document.getElementById("entrar");
-  var seccionInicio = document.getElementById("inicio");
-  var seccionPanel = document.getElementById("panel");
-  var elementoSaludo = document.getElementById("saludo");
+    elementoSaludo.textContent = saludo + ", " + nombre;
 
-  var nombreGuardado = sessionStorage.getItem("nombre");
-  if (nombreGuardado) {
-    inputNombre.value = nombreGuardado;
-  } else {
-    inputNombre.value = "";
-  }
+    
+    seccionPanel.classList.add("visible");
+  }, 700);
+});
 
-  inputNombre.focus();
 
-  inputNombre.addEventListener("keydown", function (e) {
-    if (e.key === "Enter") botonEntrar.click();
-  });
 
-  botonEntrar.addEventListener("click", function () {
-    var nombre = inputNombre.value.trim();
-    if (nombre === "") nombre = "usuario";
+let cajas = document.querySelectorAll(".caja");
 
-    sessionStorage.setItem("nombre", nombre);
+cajas.forEach(function (caja) {
+  caja.addEventListener("click", function (e) {
+    e.stopPropagation();
 
-    seccionInicio.style.opacity = "0";
-    seccionInicio.style.pointerEvents = "none";
+    let estaAbierta = caja.classList.contains("abierta");
 
-    setTimeout(function () {
-      seccionInicio.style.display = "none";
-
-      var hora = new Date().getHours();
-      var saludo = "";
-
-      if (hora < 12) {
-        saludo = "Buenos días";
-      } else if (hora < 19) {
-        saludo = "Buenas tardes";
-      } else {
-        saludo = "Buenas noches";
-      }
-
-      elementoSaludo.textContent = saludo + ", " + nombre;
-      seccionPanel.classList.add("visible");
-    }, 700);
-  });
-
-  var cajas = document.querySelectorAll(".caja");
-
-  cajas.forEach(function (caja) {
-    caja.addEventListener("click", function (e) {
-      e.stopPropagation();
-      var estaAbierta = caja.classList.contains("abierta");
-
-      cajas.forEach(function (c) {
-        c.classList.remove("abierta");
-      });
-
-      if (!estaAbierta) {
-        caja.classList.add("abierta");
-      }
-    });
-  });
-
-  document.addEventListener("click", function () {
+    // Cerrar todas
     cajas.forEach(function (c) {
       c.classList.remove("abierta");
     });
+
+    // Abrir solo una
+    if (!estaAbierta) {
+      caja.classList.add("abierta");
+    }
   });
+});
+
+
+document.addEventListener("click", function () {
+  cajas.forEach(function (c) {
+    c.classList.remove("abierta");
+  });
+});
 </script>

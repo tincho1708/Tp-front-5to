@@ -8,6 +8,7 @@ Funcion: Es una pagina web la cual cumple con la funcionalidad de ver el desempe
 
 Como ejecutar: Para ejecutarlo, se debe tener astro y node ya descargados. Una vez que ya se tiene instalado se pone el comando "npm i", luego "cd proyecto" y por ultimo "npm run dev". Ejecutando esos comandos, la pagina web correra en el servidor. ├── public/ │ └── favicon.svg ├── src │   ├── assets │   │   └── astro.svg │   ├── components │   │   └── Welcome.astro │   ├── layouts │   │   └── Layout.astro │   └── pages │   └── index.astro └── package.json
 
+Vercel: https://tp-front-5to-8sq3.vercel.app/
 
 
 
